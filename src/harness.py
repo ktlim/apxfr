@@ -153,11 +153,12 @@ class BotoUploader(Uploader):
     def transfer(self, temp_dir: Path, source: Path):
         logging.info(f"boto: uploading to {self.prefix}/{source}")
         self.client.upload_file(temp_dir / source,
-                              self.bucket, f"{self.prefix}/{source}")
+                                self.bucket, f"{self.prefix}/{source}")
 
 
 class MinioUploader(Uploader):
     def __init__(self, dest: str):
+        from io import BytesIO
         from minio import Minio
         host, self.bucket, self.prefix = dest.split("/", 2)
         logging.info(f"minio: opening host {host}, saving bucket {self.bucket}"
